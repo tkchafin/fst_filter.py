@@ -2,9 +2,6 @@
 
 import getopt
 import sys
-import re
-import ntpath
-import misc_utils as utils
 
 def string_containsAny(str, set):
 	for c in set:
@@ -24,7 +21,7 @@ def display_help(message=None):
 	print ("\nUsage:\n\n\t", sys.argv[0], "-L </path/to/loci> -P </path/to/popmap>\n")
 	print ("Description:\n")
 	print("\tFst_filter.py is a program for estimating Fst for RAD loci and SNPs,\n",\
-	"\tand filtering datasets based on Fst and missing data.)
+	"\tand filtering datasets based on Fst and missing data.")
 
 
 	print("""
