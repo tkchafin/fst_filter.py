@@ -6,7 +6,13 @@ import Bio
 from Bio import AlignIO
 
 """Functions for parsing and manipulating sequence alignment files
-Most functions by Zach Zbinden"""
+Functions by Zach Zbinden and Tyler Chafin"""
+
+#Function to parse a PHYLIP formatted file of SNPs
+#Function returns a BioALign object
+def read_phylip(infile):
+	for aln in AlignIO.parse(infile, "phylip-relaxed"):
+		return (aln)
 
 #Write FASTA from pandas df where col1 is index, col2 is sequence
 #seqs must be a pandas df
