@@ -18,7 +18,7 @@ def display_help(message=None):
 		print (message)
 	print ("\nFst_filter.py\n")
 	print ("Contact:\n\n\tTyler K. Chafin\n\tUniversity of Arkansas\n\ttkchafin@uark.edu\n")
-	print ("\nUsage:\n\n\t", sys.argv[0], "-L </path/to/loci> -P </path/to/popmap>\n")
+	print ("\nUsage:\n\n\t", sys.argv[0], "-i </path/to/phylip> -p </path/to/popmap>\n")
 	print ("Description:\n")
 	print("\tFst_filter.py is a program for estimating Fst for RAD loci and SNPs,\n",\
 	"\tand filtering datasets based on Fst and missing data.")
@@ -27,9 +27,8 @@ def display_help(message=None):
 	print("""
 Input options:
 
-	-L,--loci	: Input full alignments as \".loci\" format (output of pyRAD)
-	-S,--snps	: Alternatively, input only a SNP alignment (PHYLIP-formatted)
-	-P,--popmap	: Tab-delimited popmap file
+	-i,--input	: Input SNP alignment (PHYLIP-formatted)
+	-p,--popmap	: Tab-delimited popmap file
 
 """)
 
@@ -46,19 +45,16 @@ class parseArgs():
 	def __init__(self):
 		#Define options
 		try:
-			options, remainder = getopt.getopt(sys.argv[1:], 'L:h', \
-			["help","loci="])
+			options, remainder = getopt.getopt(sys.argv[1:], 'i:p:h', \
+			["help","input=","popmap="])
 		except getopt.GetoptError as err:
 			print(err)
 			display_help("\nExiting because getopt returned non-zero exit status.")
 			sys.exit(2)
-		#Default values for params
-		call_help=0 #boolean
 
 		#Input params
-		self.loci=None
-		self.snps=None
-
+		self.input=None
+		self.popmap=None
 
 		#First pass to see if help menu was called
 		for o, a in options:
@@ -70,9 +66,19 @@ class parseArgs():
 		for opt, arg_raw in options:
 			arg = arg_raw.replace(" ","")
 			arg = arg.strip()
-			if opt in ('-L', '--loci'):
-				self.loci = arg
+			if opt in ('-i', '--input'):
+				self.input = arg
+			elif opt in ('-p', '--popmap'):
+				self.popmap = arg
 			elif opt in ('-h', '--help'):
 				pass
 			else:
 				assert False, "Unhandled option %r"%opt
+
+		if self.input is None:
+			display_help("SNP file not defined!")
+			sys.exit(1)
+
+		if self.popmap is None:
+			display_help("POPMAP file not defined!")
+			sys.exit(1)
